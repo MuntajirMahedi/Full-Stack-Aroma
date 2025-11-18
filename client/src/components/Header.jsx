@@ -4,6 +4,7 @@ import api from "../api";
 
 export default function Header({ user, isAdmin, onLogout, cartCount }) {
   const [categories, setCategories] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -17,50 +18,62 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
     load();
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className="site-header shadow-sm">
       <div className="container header-inner">
 
-        {/* === Brand === */}
-        <div className="brand">
-          <Link to="/" className="logo">
-            Aroma<span className="logo-dot"></span>
-          </Link>
+        {/* LOGO */}
+        <Link to="/" className="logo">Aroma</Link>
+
+        {/* MOBILE MENU ICON */}
+        <div
+          className="mobile-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
         </div>
 
-        {/* === Navigation === */}
-        <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/products">All Products</Link>
+        {/* NAVIGATION */}
+        <nav className={`nav ${menuOpen ? "open" : ""}`}>
+          <Link to="/" onClick={closeMenu}>Home</Link>
+          <Link to="/products" onClick={closeMenu}>All Products</Link>
 
           {/* Categories */}
-          {categories.length > 0 && (
-            <div className="categories-dropdown">
-              <div className="dropdown-content">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat._id || cat.name || Math.random()}
-                    to={`/products?category=${encodeURIComponent(cat.name)}`}
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
-              </div>
+          <div className="categories-dropdown">
+            <span className="dropdown-toggle">Categories ▾</span>
+            <div className="dropdown-content">
+              {categories.map((cat) => (
+                <Link
+                  key={cat._id}
+                  to={`/products?category=${encodeURIComponent(cat.name)}`}
+                  onClick={closeMenu}
+                >
+                  {cat.name}
+                </Link>
+              ))}
             </div>
+          </div>
+
+          {user && (
+            <Link to="/orders" onClick={closeMenu}>Orders</Link>
           )}
 
+          {user && (
+            <Link to="/profile" onClick={closeMenu}>
+              Hi, {user.name}
+            </Link>
+          )}
 
-          {/* Orders */}
-          {user && <Link to="/orders">Orders</Link>}
+          {isAdmin && (
+            <Link to="/admin/categories" onClick={closeMenu}>
+              Admin
+            </Link>
+          )}
 
-          
-
-          {/* Auth */}
-          {!user && <Link to="/login">Login</Link>}
-          {!user && <Link to="/register">Register</Link>}
-          {user && <Link to="/profile">Hi, {user.name}</Link>}
-
-          {isAdmin && <Link to="/admin/categories">Admin</Link>}
+          {!user && <Link to="/login" onClick={closeMenu}>Login</Link>}
+          {!user && <Link to="/register" onClick={closeMenu}>Register</Link>}
 
           {user && (
             <button className="btn-logout" onClick={onLogout}>
@@ -68,16 +81,14 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
             </button>
           )}
 
-          {/* Cart with badge */}
           {user && (
-            <Link to="/cart" className="cart-link">
-              🛒 &nbsp;
-              {cartCount > 0 && (
-                <span className="cart-badge">{cartCount}</span>
-              )}
+            <Link to="/cart" className="cart-link" onClick={closeMenu}>
+              🛒
+              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
           )}
         </nav>
+
       </div>
     </header>
   );
