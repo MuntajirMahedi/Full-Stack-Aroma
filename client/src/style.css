@@ -1384,6 +1384,17 @@ th {
   margin-top: 12px;
 }
 
+.error-text {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.input-error {
+  border: 1px solid red !important;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1401,6 +1412,9 @@ th {
     padding: 24px;
   }
 }
+
+
+
 
 
 

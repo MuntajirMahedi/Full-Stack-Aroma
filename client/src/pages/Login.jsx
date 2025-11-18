@@ -8,23 +8,43 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [fieldErrors, setFieldErrors] = useState({}); // ⭐ field-wise errors
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
     setError(null);
     setSuccess(null);
+    setFieldErrors({});
+
+    // ⭐ FRONTEND VALIDATION
+    const newErr = {};
+
+    if (!email.trim()) newErr.email = "Email is required";
+    if (!password.trim()) newErr.password = "Password is required";
+
+    if (Object.keys(newErr).length > 0) {
+      setFieldErrors(newErr);
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await api.post("/api/auth/login", { email, password });
       const token = res.data?.token;
+
       if (token) {
         localStorage.setItem("token", token);
         setSuccess("✓ Login successful! Redirecting...");
+
         setTimeout(() => {
           window.dispatchEvent(new Event("authChange"));
           navigate("/");
-        }, 1500);
+        }, 1200);
       } else {
         setError("No token received from server");
       }
@@ -35,15 +55,6 @@ export default function Login() {
     }
   };
 
-  const showToken = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      alert(`✓ Token found:\n\n${token}`);
-    } else {
-      alert("✗ No token in localStorage");
-    }
-  };
-
   return (
     <section className="login-page">
       <div className="container">
@@ -51,6 +62,7 @@ export default function Login() {
           <h2>Welcome Back 👋</h2>
           <p className="muted">Please sign in to your Aroma account</p>
 
+          {/* TOP ERRORS */}
           {error && (
             <div className="alert error">
               <strong>✗</strong> {error}
@@ -63,26 +75,35 @@ export default function Login() {
           )}
 
           <form onSubmit={handleSubmit}>
+
+            {/* EMAIL */}
             <div className="form-group">
               <label>Email Address</label>
               <input
+                className={fieldErrors.email ? "input-error" : ""}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
-                required
                 placeholder="you@example.com"
               />
+              {fieldErrors.email && (
+                <p className="error-text">{fieldErrors.email}</p>
+              )}
             </div>
 
+            {/* PASSWORD */}
             <div className="form-group">
               <label>Password</label>
               <input
+                className={fieldErrors.password ? "input-error" : ""}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
-                required
                 placeholder="••••••••"
               />
+              {fieldErrors.password && (
+                <p className="error-text">{fieldErrors.password}</p>
+              )}
             </div>
 
             <button
@@ -93,21 +114,12 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
 
-            {/* <button
-              type="button"
-              onClick={showToken}
-              className="btn btn-ghost full"
-            >
-              Show Token
-            </button> */}
-
             <p className="muted small-text">
               Don’t have an account?{" "}
-              <a href="/register" className="link">
-                Register here
-              </a>
+              <a href="/register" className="link">Register here</a>
             </p>
           </form>
+
         </div>
       </div>
     </section>
