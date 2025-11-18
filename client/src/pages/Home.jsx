@@ -61,7 +61,7 @@ export default function Home() {
     {/* LEFT CONTENT */}
     <div className="hero-v2-left">
       <div className="hero-badge">
-        <img src="" alt="" />
+        {/* <img src="../src/assets/hot-sale.png" alt="" /> */}
         Hot Deal In This Week
       </div>
 
@@ -71,7 +71,7 @@ export default function Home() {
         <Link to="/products" className="hero-btn">Shop Now</Link>
 
         <div className="rating-box">
-          <img src="" alt="" />
+          {/* <img src="" alt="" /> */}
           
           <span>⭐⭐⭐⭐⭐<br/>
           100+ Reviews</span>
@@ -109,7 +109,7 @@ export default function Home() {
   <div className="container">
 
     <div className="why-tag">
-      <img src="/src/assets/icons/why.svg" alt="" />
+      {/* <img src="/src/assets/icons/why.svg" alt="" /> */}
       Why Us
     </div>
 
@@ -195,7 +195,7 @@ export default function Home() {
 
     {/* Section Tag */}
     <div className="featured-tag">
-      <img src="/src/assets/icons/mostsold.svg" alt="" />
+      {/* <img src="/src/assets/icons/mostsold.svg" alt="" /> */}
       Most Sold
     </div>
 
@@ -300,7 +300,7 @@ export default function Home() {
     {/* Heading */}
     <div className="t-head">
       <div className="t-tag">
-        <img src="/src/assets/icons/testimonial.svg" alt="" />
+        {/* <img src="/src/assets/icons/testimonial.svg" alt="" /> */}
         Testimonials
       </div>
       <h2 className="t-title">Users Feedback</h2>
@@ -383,7 +383,7 @@ export default function Home() {
     {/* LEFT */}
     <div className="newsletter-left">
       <div className="news-tag">
-        <img src="/src/assets/icons/mail.svg" alt="" />
+        {/* <img src="/src/assets/icons/mail.svg" alt="" /> */}
         Newsletter
       </div>
 
