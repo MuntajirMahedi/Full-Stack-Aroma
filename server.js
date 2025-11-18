@@ -16,7 +16,6 @@ app.use(morgan("dev"));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -39,17 +38,19 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 
-
-mongoose.connect(process.env.MONGODB_URI,)
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Test Route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
+// Use PORT from .env
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-}); 
+  console.log(`Server running on port ${PORT}`);
+});
