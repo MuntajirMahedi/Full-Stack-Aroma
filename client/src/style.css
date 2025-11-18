@@ -2195,6 +2195,42 @@ th {
   background: var(--accent);
 }
 
+
+/* QTY BOX STYLING */
+.qty-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #f3f4f6;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: #e5e7eb;
+}
+
+.qty-box input {
+  width: 50px;
+  height: 32px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+
 /* ==============================
    RESPONSIVE
 ============================== */
@@ -2203,6 +2239,9 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+
+
 
 
 

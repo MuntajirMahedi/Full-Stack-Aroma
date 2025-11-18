@@ -177,22 +177,45 @@ export default function Cart() {
                   <p className="price">₹{p.price}</p>
 
                   <div className="qty-control">
-                    <label>Qty</label>
-                    <input
-                      type="number"
-                      min={1}
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateQty(item._id, Number(e.target.value) || 1)
-                      }
-                    />
-                    <button
-                      className="btn-remove"
-                      onClick={() => remove(p._id)}
-                    >
-                      Remove
-                    </button>
-                  </div>
+  <label>Qty</label>
+
+  <div className="qty-box">
+    <button 
+      className="qty-btn" 
+      onClick={() => updateQty(item._id, Math.max(1, item.quantity - 1))}
+    >
+      -
+    </button>
+
+    <input
+      type="number"
+      min={1}
+      max={5}
+      value={item.quantity}
+      onChange={(e) => {
+        let q = Number(e.target.value);
+        if (q < 1) q = 1;
+        if (q > 5) q = 5;
+        updateQty(item._id, q);
+      }}
+    />
+
+    <button 
+      className="qty-btn" 
+      onClick={() => updateQty(item._id, Math.min(5, item.quantity + 1))}
+    >
+      +
+    </button>
+  </div>
+
+  <button
+    className="btn-remove"
+    onClick={() => remove(p._id)}
+  >
+    Remove
+  </button>
+</div>
+
                 </div>
                 
               </div>
