@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const API_BASE = import.meta.env.VITE_API_URL || "https://full-stack-aroma.vercel.app";
+export const API_BASE = import.meta.env.VITE_API_URL || "https://full-stack-aroma.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE,
