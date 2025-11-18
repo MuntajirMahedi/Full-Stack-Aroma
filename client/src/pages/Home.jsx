@@ -190,9 +190,6 @@ export default function Home() {
       {/* === MOST SOLD / FEATURED PRODUCTS === */}
 <section className="featured-v2">
   <div className="container">
-    
-
-    
 
     <h2 className="featured-title">Most Sold in Aroma Store</h2>
 
@@ -216,7 +213,12 @@ export default function Home() {
         }
 
         return (
-          <div key={p._id} className="featured-card">
+          <Link
+            to={`/products/${p._id}`}
+            key={p._id}
+            className="featured-card"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
 
             {/* LEFT IMAGE */}
             <div className="featured-left">
@@ -238,7 +240,6 @@ export default function Home() {
                       key={i}
                       src={t}
                       className="thumb-img"
-                      onClick={() => window.location.href = `/products/${p._id}`}
                     />
                   );
                 })}
@@ -265,26 +266,28 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Right side icons */}
+              {/* Actions */}
               <div className="featured-actions">
                 <button 
                   className="ico-btn"
-                  onClick={() => addToCart(p._id)}
+                  onClick={(e) => {
+                    e.preventDefault(); // ❗ Card link ko rukne se bachata hai
+                    addToCart(p._id);
+                  }}
                 >
-                 Add to cart🛒
+                  Add to cart 🛒
                 </button>
-
-                {/* <button className="ico-btn">🤍</button> */}
               </div>
             </div>
 
-          </div>
+          </Link>
         );
       })}
     </div>
 
   </div>
 </section>
+
 
 
 
