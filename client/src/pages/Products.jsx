@@ -73,7 +73,7 @@ export default function Products() {
           {category && <span className="muted"> — {category}</span>}
         </h2>
 
-        {category && <Link to="/products" className="btn">View All</Link>}
+        {category && <Link to="/products" className="hero-btn">View All</Link>}
       </div>
 
       {/* === PRODUCT GRID === */}
