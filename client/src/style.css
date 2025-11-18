@@ -55,7 +55,7 @@ body {
   text-decoration: none;
 }
 
-/* DESKTOP NAV */
+/* NAV DESKTOP */
 .nav {
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@ body {
   font-weight: 500;
 }
 
-/* DROPDOWN */
+/* CATEGORY DROPDOWN */
 .categories-dropdown {
   position: relative;
 }
@@ -95,66 +95,83 @@ body {
 }
 
 .dropdown-content a {
-  display: block;
-  padding: 6px;
   color: #333;
+  padding: 6px;
+  display: block;
 }
 
 /* CART */
 .cart-link {
-  position: relative;
   font-size: 20px;
+  position: relative;
 }
 
 .cart-badge {
   background: red;
   color: white;
+  font-size: 12px;
   padding: 2px 6px;
   border-radius: 50px;
   position: absolute;
   top: -6px;
   right: -10px;
-  font-size: 12px;
 }
 
-/* LOGOUT */
-.btn-logout {
-  background: #f87171;
-  border: none;
+/* PROFILE DROPDOWN */
+.profile-dropdown {
+  position: relative;
+}
+
+.profile-toggle {
   color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background: white;
+  padding: 12px;
+  min-width: 150px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-menu a {
+  color: #333;
+  text-decoration: none;
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: white;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* MOBILE TOGGLE */
+/* MOBILE MENU TOGGLE */
 .mobile-toggle {
   display: none;
-  color: #fff;
+  color: white;
   font-size: 32px;
   cursor: pointer;
   margin-left: auto;
 }
 
-/* ---------------------------------
-   RESPONSIVE FIX (FINAL)
----------------------------------- */
+/* MOBILE RESPONSIVE */
 @media (max-width: 800px) {
-
-  /* LOGO + TOGGLE SAME LINE */
-  .header-inner {
-    flex-direction: none;
-    align-items: flex-start;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
 
   .mobile-toggle {
     display: block;
   }
 
-  /* MOBILE NAV */
   .nav {
     display: none;
     flex-direction: column;
@@ -165,16 +182,28 @@ body {
     width: 100%;
     padding: 20px;
     gap: 16px;
+    z-index: 999;
   }
 
   .nav.open {
     display: flex;
   }
 
-  /* Categories dropdown mobile */
+  /* Profile dropdown in mobile */
+  .profile-menu {
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .profile-menu a,
+  .logout-btn {
+    color: white !important;
+  }
+
+  /* Mobile category dropdown */
   .categories-dropdown:hover .dropdown-content {
     display: block;
-    position: relative;
     background: transparent;
     box-shadow: none;
   }
@@ -184,6 +213,8 @@ body {
     padding-left: 15px;
   }
 }
+
+
 
 
 

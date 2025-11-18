@@ -5,6 +5,7 @@ import api from "../api";
 export default function Header({ user, isAdmin, onLogout, cartCount }) {
   const [categories, setCategories] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -19,6 +20,7 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
+  const closeProfile = () => setProfileOpen(false);
 
   return (
     <header className="site-header shadow-sm">
@@ -28,19 +30,17 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
         <Link to="/" className="logo">Aroma</Link>
 
         {/* MOBILE MENU ICON */}
-        <div
-          className="mobile-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <div className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           ☰
         </div>
 
         {/* NAVIGATION */}
         <nav className={`nav ${menuOpen ? "open" : ""}`}>
+
           <Link to="/" onClick={closeMenu}>Home</Link>
           <Link to="/products" onClick={closeMenu}>All Products</Link>
 
-          {/* Categories */}
+          {/* Categories Dropdown */}
           <div className="categories-dropdown">
             <span className="dropdown-toggle">Categories ▾</span>
             <div className="dropdown-content">
@@ -56,39 +56,62 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
             </div>
           </div>
 
+          {/* USER PROFILE DROPDOWN */}
           {user && (
-            <Link to="/orders" onClick={closeMenu}>Orders</Link>
-          )}
+            <div className="profile-dropdown">
+              <span
+                className="profile-toggle"
+                onClick={() => setProfileOpen(!profileOpen)}
+              >
+                Hi, {user.name} ▾
+              </span>
 
-          {user && (
-            <Link to="/profile" onClick={closeMenu}>
-              Hi, {user.name}
-            </Link>
+              {profileOpen && (
+                <div className="profile-menu">
+                  <Link
+                    to="/profile"
+                    onClick={() => { closeProfile(); closeMenu(); }}
+                  >
+                    My Profile
+                  </Link>
+
+                  <Link
+                    to="/orders"
+                    onClick={() => { closeProfile(); closeMenu(); }}
+                  >
+                    Orders
+                  </Link>
+
+                  <button
+                    className="logout-btn"
+                    onClick={() => {
+                      closeProfile();
+                      onLogout();
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           )}
 
           {isAdmin && (
-            <Link to="/admin/categories" onClick={closeMenu}>
-              Admin
-            </Link>
+            <Link to="/admin/categories" onClick={closeMenu}>Admin</Link>
           )}
 
           {!user && <Link to="/login" onClick={closeMenu}>Login</Link>}
           {!user && <Link to="/register" onClick={closeMenu}>Register</Link>}
 
-          {user && (
-            <button className="btn-logout" onClick={onLogout}>
-              Logout
-            </button>
-          )}
-
+          {/* CART */}
           {user && (
             <Link to="/cart" className="cart-link" onClick={closeMenu}>
               🛒
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
           )}
-        </nav>
 
+        </nav>
       </div>
     </header>
   );
