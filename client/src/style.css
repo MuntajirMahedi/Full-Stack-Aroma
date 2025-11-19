@@ -934,6 +934,26 @@ th {
 
 
 
+.all-products {
+  display: inline-flex;
+  background-color: #333;
+  
+  color: #fcfcfc;
+  font-weight: auto;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 50px;
+
+}
+
+
+
+
+
 
 
 
