@@ -2333,8 +2333,8 @@ th {
 }
 
 .price {
-  color: var(--primary);
-  font-size: 28px;
+  color: #b91c1c;
+  font-size: 20px;
   font-weight: 700;
 }
 

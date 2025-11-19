@@ -138,7 +138,7 @@ export default function Products() {
 
               {/* === PRICE === */}
               <div className="p-price-row">
-                <span className="hero-btn" >₹{p.price}</span>
+                <span className="price" >₹{p.price}</span>
                 {p.oldPrice && <span className="p-old-price">₹{p.oldPrice}</span>}
               </div>
 
