@@ -46,7 +46,7 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
             <div className="dropdown-content">
               {categories.map((cat) => (
                 <Link
-                  key={cat._id}
+                  key={cat._id || cat.slug || cat.name}
                   to={`/products?category=${encodeURIComponent(cat.name)}`}
                   onClick={closeMenu}
                 >
@@ -107,7 +107,9 @@ export default function Header({ user, isAdmin, onLogout, cartCount }) {
           {user && (
             <Link to="/cart" className="cart-link" onClick={closeMenu}>
               🛒
-              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              {cartCount > 0 && (
+                <span className="cart-badge">{cartCount}</span>
+              )}
             </Link>
           )}
 
