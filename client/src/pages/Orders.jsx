@@ -6,6 +6,7 @@ export default function Orders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // IMAGE FIX
   const getImg = (p) => {
     if (!p?.images?.length) return "/placeholder.png";
     const url = p.images[0].url;
@@ -40,27 +41,22 @@ export default function Orders() {
       {orders.map((o) => (
         <div key={o._id} className="order-card">
 
-          {/* ORDER HEADER */}
+          {/* HEADER */}
           <div className="order-header">
             <div>
               <strong>Order ID:</strong> {o._id}
             </div>
             <div>
-              <strong>Date:</strong>{" "}
-              {new Date(o.createdAt).toLocaleDateString()}
+              <strong>Date:</strong> {new Date(o.createdAt).toLocaleDateString()}
             </div>
           </div>
 
-          {/* ORDER STATUS */}
-          <div
-            className={`order-status-badge ${
-              (o.status || "Pending").toLowerCase()
-            }`}
-          >
+          {/* STATUS */}
+          <div className={`order-status-badge ${(o.status || "Pending").toLowerCase()}`}>
             {o.status || "Pending"}
           </div>
 
-          {/* ORDER ITEMS */}
+          {/* ITEMS */}
           <div className="order-items">
             {o.items.map((it) => (
               <div key={it._id} className="order-product">
@@ -74,48 +70,53 @@ export default function Orders() {
                   <h4>{it.product?.title}</h4>
                   <p className="muted">{it.product?.brand}</p>
 
-                  <p>
-                    <strong>Price:</strong> ₹{it.product?.price}
-                  </p>
-
-                  <p>
-                    <strong>Qty:</strong> {it.quantity}
-                  </p>
+                  <p><strong>Price:</strong> ₹{it.product?.price}</p>
+                  <p><strong>Qty:</strong> {it.quantity}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* ORDER SUMMARY */}
+          {/* SUMMARY */}
           <div className="order-summary">
-            <p>
-              <strong>Total Items:</strong> {o.items.length}
-            </p>
+            <p><strong>Total Items:</strong> {o.items.length}</p>
+
             <p>
               <strong>Total Amount:</strong> ₹
               {o.totalAmount ||
                 o.items.reduce(
-                  (sum, it) =>
-                    sum + (it.product?.price || 0) * it.quantity,
+                  (sum, it) => sum + (it.product?.price || 0) * it.quantity,
                   0
                 )}
             </p>
+
+            <p><strong>Payment:</strong> {o.paymentMethod || "N/A"}</p>
+
+          </div>
+
+          {/* SHIPPING ADDRESS */}
+          <div className="order-shipping">
+            <h4>Shipping Address</h4>
+
+            <p><strong>Address:</strong> {o.shippingAddress?.address}</p>
+
             <p>
-              <strong>Payment:</strong> {o.paymentMethod || "N/A"}
+              <strong>City:</strong> {o.shippingAddress?.city}
+            </p>
+
+            <p>
+              <strong>State:</strong> {o.shippingAddress?.state}
+            </p>
+
+            <p>
+              <strong>Pincode:</strong> {o.shippingAddress?.pincode}
+            </p>
+
+            <p>
+              <strong>Country:</strong> {o.shippingAddress?.country}
             </p>
           </div>
 
-          {/* SHIPPING INFO */}
-          <div className="order-shipping">
-            <h4>Shipping Address</h4>
-            <p>{o.shippingAddress?.address}</p>
-            <p>
-              {o.shippingAddress?.city}, {o.shippingAddress?.state}
-            </p>
-            <p>
-              {o.shippingAddress?.pincode}, {o.shippingAddress?.country}
-            </p>
-          </div>
         </div>
       ))}
     </div>

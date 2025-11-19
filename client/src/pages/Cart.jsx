@@ -7,30 +7,30 @@ export default function Cart() {
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
 
-  // Shipping address
+  // Address Fields
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [stateField, setStateField] = useState("");
   const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("");
+
   const [formError, setFormError] = useState(null);
 
-  /** IMAGE URL FIX */
+  /** Image URL Fix */
   const getImageUrl = (product) => {
     if (!product?.images?.length) return "/placeholder.png";
     const url = product.images[0].url || "";
-    if (/^(https?:)?\/\//i.test(url) || url.startsWith("data:")) return url;
+    if (/^(https?:)?\/\//i.test(url)) return url;
     return `${API_BASE}${url.startsWith("/") ? "" : "/"}${url}`;
   };
 
-  /** LOAD CART */
+  /** Load Cart */
   const load = async () => {
     setLoading(true);
     try {
       const res = await api.get("/api/cart");
       let data = res.data || { items: [] };
 
-      // Populate missing product data
       const populatedItems = await Promise.all(
         data.items.map(async (item) => {
           if (!item.product || typeof item.product === "string") {
@@ -57,29 +57,25 @@ export default function Cart() {
     load();
   }, []);
 
-  /** INSTANT REMOVE FIX */
+  /** Remove item */
   const remove = async (productId) => {
     try {
-      // 1️⃣ UI instantly update
       setCart((prev) => ({
         ...prev,
         items: prev.items.filter((it) => it.product._id !== productId),
       }));
 
-      // 2️⃣ API background call
       await api.delete(`/api/cart/${productId}`);
-
       window.dispatchEvent(new Event("cartChange"));
     } catch (err) {
       setError(err.response?.data?.msg || err.message);
     }
   };
 
-  /** INSTANT QTY UPDATE FIX */
+  /** Update quantity */
   const updateQty = async (itemId, qty) => {
     if (qty < 1) return;
 
-    // 1️⃣ UI instantly update
     setCart((prev) => ({
       ...prev,
       items: prev.items.map((it) =>
@@ -87,7 +83,6 @@ export default function Cart() {
       ),
     }));
 
-    // 2️⃣ API background update
     try {
       await api.patch(`/api/cart/${itemId}`, { quantity: qty });
     } catch (err) {
@@ -95,45 +90,50 @@ export default function Cart() {
     }
   };
 
-  if (loading) return <p className="loading">Loading your cart...</p>;
-  if (error) return <p className="error">Error: {error}</p>;
+  if (loading) return <p>Loading cart...</p>;
+  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   const total = cart.items.reduce(
     (sum, it) => sum + (it.product?.price || 0) * it.quantity,
     0
   );
 
-  const validateAddress = () => {
+  /** Validation */
+  const validate = () => {
     if (!address) return "Address is required";
     if (!city) return "City is required";
     if (!stateField) return "State is required";
-    if (!pincode) return "Pincode is required";
-    if (!country) return "Country is required";
+    if (!pincode) return "Pincode required";
+    if (!country) return "Select country";
     return null;
   };
 
+  /** Checkout */
   const handleCheckout = async () => {
-    setFormError(null);
-    const err = validateAddress();
+    const err = validate();
     if (err) return setFormError(err);
 
     if (!cart.items.length) return setFormError("Cart is empty");
+
     setProcessing(true);
 
     try {
-      const payload = {
+      await api.post("/api/orders", {
         items: cart.items.map((it) => ({
           product: it.product._id,
           quantity: it.quantity,
         })),
         paymentMethod: "COD",
         totalAmount: total,
-        shippingAddress: { address, city, pincode, state: stateField, country },
-      };
+        shippingAddress: {
+          address,
+          city,
+          pincode,
+          state: stateField,
+          country,
+        },
+      });
 
-      await api.post("/api/orders", payload);
-
-      // Clear cart in background
       await Promise.all(
         cart.items.map((it) =>
           api.delete(`/api/cart/${it.product._id}`)
@@ -151,8 +151,8 @@ export default function Cart() {
   return (
     <section className="cart-page">
       <div className="container cart-grid">
-        
-        {/* LEFT ITEMS */}
+
+        {/* LEFT CART ITEMS */}
         <div className="cart-items">
           <h2>Your Cart</h2>
 
@@ -166,58 +166,55 @@ export default function Cart() {
 
             return (
               <div key={item._id} className="cart-item card">
-
                 <div className="cart-img-box">
                   <img src={imgUrl} alt={p.title} />
                 </div>
 
                 <div className="cart-info">
-                  <h4>{p.title}</h4>
+                  <h3>{p.title}</h3>
                   <p className="muted">Brand: {p.brand}</p>
                   <p className="price">₹{p.price}</p>
 
-                  <div className="qty-control">
-  <label>Qty</label>
+                  <div className="qty-box">
+                    <button
+                      className="qty-btn"
+                      onClick={() =>
+                        updateQty(item._id, Math.max(1, item.quantity - 1))
+                      }
+                    >
+                      -
+                    </button>
 
-  <div className="qty-box">
-    <button 
-      className="qty-btn" 
-      onClick={() => updateQty(item._id, Math.max(1, item.quantity - 1))}
-    >
-      -
-    </button>
+                    <input
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={item.quantity}
+                      onChange={(e) => {
+                        let q = Number(e.target.value);
+                        if (q < 1) q = 1;
+                        if (q > 5) q = 5;
+                        updateQty(item._id, q);
+                      }}
+                    />
 
-    <input
-      type="number"
-      min={1}
-      max={5}
-      value={item.quantity}
-      onChange={(e) => {
-        let q = Number(e.target.value);
-        if (q < 1) q = 1;
-        if (q > 5) q = 5;
-        updateQty(item._id, q);
-      }}
-    />
+                    <button
+                      className="qty-btn"
+                      onClick={() =>
+                        updateQty(item._id, Math.min(5, item.quantity + 1))
+                      }
+                    >
+                      +
+                    </button>
 
-    <button 
-      className="qty-btn" 
-      onClick={() => updateQty(item._id, Math.min(5, item.quantity + 1))}
-    >
-      +
-    </button>
-  </div>
-
-  <button
-    className="btn-remove"
-    onClick={() => remove(p._id)}
-  >
-    Remove
-  </button>
-</div>
-
+                    <button
+                      className="btn-remove"
+                      onClick={() => remove(p._id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                
               </div>
             );
           })}
@@ -229,16 +226,16 @@ export default function Cart() {
 
           <div className="summary-line">
             <span>Subtotal</span>
-            <span>₹{total}</span>
+            <strong>₹{total}</strong>
           </div>
 
           <div className="summary-line">
             <span>Shipping</span>
-            <span>Free</span>
+            <strong>Free</strong>
           </div>
 
           <div className="summary-line total">
-            <strong>Total</strong>
+            <span>Total</span>
             <strong>₹{total}</strong>
           </div>
 
@@ -247,28 +244,60 @@ export default function Cart() {
             <h4>Shipping Address</h4>
 
             <textarea
+              className="textarea"
               placeholder="Full Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
 
             <div className="form-row">
-              <input placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
-              <input placeholder="State" value={stateField} onChange={(e) => setStateField(e.target.value)} />
+              <input
+                className="input"
+                placeholder="City"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <input
+                className="input"
+                placeholder="State"
+                value={stateField}
+                onChange={(e) => setStateField(e.target.value)}
+              />
             </div>
 
             <div className="form-row">
-              <input placeholder="Pincode" value={pincode} onChange={(e) => setPincode(e.target.value)} />
-              <input placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)} />
+              <input
+                className="input"
+                placeholder="Pincode"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
+              />
+
+              <select
+                className="input-select"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+                <option value="UAE">UAE</option>
+                <option value="Australia">Australia</option>
+                <option value="Japan">Japan</option>
+              </select>
             </div>
 
             {formError && <p className="error">{formError}</p>}
 
-            <button className="add-btn-et single-add-btn" disabled={processing} onClick={handleCheckout}>
+            <button
+              className="checkout-btn"
+              disabled={processing}
+              onClick={handleCheckout}
+            >
               {processing ? "Processing..." : "Checkout (COD)"}
             </button>
           </div>
-
         </div>
       </div>
     </section>
