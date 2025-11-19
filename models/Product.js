@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema(
    category: {
   type: String,
   required: true,
-  enum: ["Laptop", "TV", "Desktop", "AC", "Accessories"]
+  enum: ["Laptop", "LED TVs", "Desktops", "Air Conditioners", "Accessories"]
 }
 ,
     images: [
