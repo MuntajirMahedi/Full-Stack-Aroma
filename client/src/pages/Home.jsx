@@ -276,20 +276,18 @@ export default function Home() {
 
 
 
-      {/* === MOST SOLD / FEATURED PRODUCTS === */}
+      {/* === MOST SOLD / FEATURED PRODUCTS (ONLY SHOW 4) === */}
 <section className="featured-v2">
   <div className="container">
 
     <h2 className="featured-title">Most Sold in Aroma Store</h2>
 
     {/* Section Tag */}
-    <div className="featured-tag">
-      {/* <img src="/src/assets/icons/mostsold.svg" alt="" /> */}
-      Most Sold
-    </div>
+    <div className="featured-tag">Most Sold</div>
 
+    {/* ⭐ Show ONLY 4 products */}
     <div className="featured-list">
-      {products.map((p) => {
+      {products.slice(0, 4).map((p) => {   // <-- ONLY 4 PRODUCTS WILL SHOW
         let mainImg = null;
         let thumbnails = [];
 
@@ -360,7 +358,7 @@ export default function Home() {
                 <button 
                   className="ico-btn"
                   onClick={(e) => {
-                    e.preventDefault(); // ❗ Card link ko rukne se bachata hai
+                    e.preventDefault(); 
                     addToCart(p._id);
                   }}
                 >
