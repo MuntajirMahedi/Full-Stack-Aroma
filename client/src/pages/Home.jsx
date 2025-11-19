@@ -168,7 +168,7 @@ export default function Home() {
       <Link to="/products?category=Laptop" className="cat-card">
         <div className="cat-icon-box">
           <img
-            src="/categories/Categories-Laptop.jpg"
+            src="Categories-Laptop.jpg"
             alt="Laptop"
             className="cat-icon"
           />
@@ -180,7 +180,7 @@ export default function Home() {
       <Link to="/products?category=Air Conditioners" className="cat-card">
         <div className="cat-icon-box">
           <img
-            src="/categories/Categories-Air-Conditioners.jpg"
+            src="Categories-Air-Conditioners.jpg"
             alt="AC"
             className="cat-icon"
           />
@@ -192,7 +192,7 @@ export default function Home() {
       <Link to="/products?category=Desktops" className="cat-card">
         <div className="cat-icon-box">
           <img
-            src="/categories/Categories-Desktops.jpg"
+            src="Categories-Desktops.jpg"
             alt="Desktops"
             className="cat-icon"
           />
@@ -204,7 +204,7 @@ export default function Home() {
       <Link to="/products?category=Accessories" className="cat-card">
         <div className="cat-icon-box">
           <img
-            src="/categories/Categories-Accessories.jpg"
+            src="Categories-Accessories.jpg"
             alt="Accessories"
             className="cat-icon"
           />
@@ -216,7 +216,7 @@ export default function Home() {
       <Link to="/products?category=LED TVs" className="cat-card">
         <div className="cat-icon-box">
           <img
-            src="/categories/Categories-LED-TVs.jpeg"
+            src="Categories-LED-TVs.jpeg"
             alt="LED TVs"
             className="cat-icon"
           />
