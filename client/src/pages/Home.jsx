@@ -3,6 +3,7 @@ import api, { API_BASE } from "../api";
 import { Link } from "react-router-dom";
 import Toast from "../components/Toast";
 // import staricon from '/src/assets/icons/star.png';
+// import staricone from '/src/assets/icons/logo.png';
 
 
 
@@ -146,6 +147,94 @@ export default function Home() {
 
   </div>
 </section>
+
+
+
+
+
+
+{/* === CATEGORY SECTION (Browse by Category) === */}
+<section className="category-section">
+  <div className="container">
+
+    <div className="cat-head">
+      <span className="cat-tag">Categories</span>
+      <h2 className="cat-title">Browse by Category</h2>
+    </div>
+
+    <div className="cat-grid">
+
+      {/* Laptop */}
+      <Link to="/products?category=Laptop" className="cat-card">
+        <div className="cat-icon-box">
+          <img
+            src="/src/assets/categories/Categories-Laptop.jpg"
+            alt="Laptop"
+            className="cat-icon"
+          />
+        </div>
+        <p className="cat-name">Laptop</p>
+      </Link>
+
+      {/* AC */}
+      <Link to="/products?category=Air Conditioners" className="cat-card">
+        <div className="cat-icon-box">
+          <img
+            src="/src/assets/categories/Categories-Air-Conditioners.jpg"
+            alt="AC"
+            className="cat-icon"
+          />
+        </div>
+        <p className="cat-name">Air Conditioners</p>
+      </Link>
+
+      {/* Desktops */}
+      <Link to="/products?category=Desktops" className="cat-card">
+        <div className="cat-icon-box">
+          <img
+            src="/src/assets/categories/Categories-Desktops.jpg"
+            alt="Desktops"
+            className="cat-icon"
+          />
+        </div>
+        <p className="cat-name">Desktops</p>
+      </Link>
+
+      {/* Accessories */}
+      <Link to="/products?category=Accessories" className="cat-card">
+        <div className="cat-icon-box">
+          <img
+            src="/src/assets/categories/Categories-Accessories.jpg"
+            alt="Accessories"
+            className="cat-icon"
+          />
+        </div>
+        <p className="cat-name">Accessories</p>
+      </Link>
+
+      {/* LED TVs */}
+      <Link to="/products?category=LED TVs" className="cat-card">
+        <div className="cat-icon-box">
+          <img
+            src="/src/assets/categories/Categories-LED-TVs.jpeg"
+            alt="LED TVs"
+            className="cat-icon"
+          />
+        </div>
+        <p className="cat-name">LED TVs</p>
+      </Link>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
 
 
 {/* === PROMO BANNERS SECTION === */}

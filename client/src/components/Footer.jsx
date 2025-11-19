@@ -45,7 +45,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <div>© {new Date().getFullYear()} Aroma. All rights reserved.</div>
-        <div className="credit">Built with <span aria-hidden="true">❤️</span> by <strong>ME</strong></div>
+        <div className="credit">Built with <span aria-hidden="true"></span> by <strong>Mahedi</strong></div>
       </div>
     </footer>
   );
